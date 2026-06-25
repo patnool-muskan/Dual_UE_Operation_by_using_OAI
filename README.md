@@ -55,9 +55,9 @@ If anything above fails, jump to [Step-by-Step Setup](#step-by-step-setup) or th
 
 | Role | Machine | Notes |
 |---|---|---|
-| OAI 5G Core + gNB | `PC1` | Runs all core NF containers + gNB. Hosts `oai-ext-dn` (Data Network) at `192.168.70.135`. |
-| UE1 (eMBB) | `PC2` | Own USRP. Tunnel IP `10.0.2.17` after PDU session establishment. |
-| UE2 (URLLC) | `PC3` | Own USRP. Tunnel IP `10.0.0.11` after PDU session establishment. |
+| OAI 5G Core + gNB | PC1 | Runs all core NF containers + gNB. Hosts `oai-ext-dn` (Data Network) at `192.168.70.135`. |
+| UE1 (eMBB) | PC2 | Own USRP. Tunnel IP `10.0.2.17` after PDU session establishment. |
+| UE2 (URLLC) | PC3 | Own USRP. Tunnel IP `10.0.0.11` after PDU session establishment. |
 
 All three machines communicate over their USRPs (RF sync confirmed) before any slice-level testing.
 
