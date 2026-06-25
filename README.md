@@ -188,7 +188,7 @@ Wait until every container shows `healthy` (not just `running`) before proceedin
 With the core containers up, start the gNB process (on the host, not in a container) using your gNB config (the `conf/config.yaml` in this repo describes the matching CN-side slice/DNN setup — your gNB conf should reference the same SST/SD values):
 
 ```bash
-sudo ./nr-softmodem -O <path-to-gnb-conf> --sa -E --continuous-tx
+sudo ./nr-softmodem   -O ../../../targets/PROJECTS/GENERIC-NR-5GC/CONF/gnb.sa.band78.fr1.106PRB.usrpb210.conf   --gNBs.[0].min_rxtxtime 8 -E
 ```
 
 Confirm in the gNB logs that it registers with the AMF (`N2 setup` success) before starting either UE.
@@ -196,7 +196,7 @@ Confirm in the gNB logs that it registers with the AMF (`N2 setup` success) befo
 ### 5. Start UE1 — eMBB (UE1's PC)
 
 ```bash
-sudo ./nr-uesoftmodem -O ue_embb.conf --sa -r 106 --numerology 1 -E --continuous-tx
+sudo "./nr-uesoftmodem" "-r" "106" "--numerology" "1" "--band" "78" "-C" "3619200000" "--ssb" "516" "-E" "-O" "/<Path-of-the-ue_embb.conf>/ue_embb.conf"
 ```
 
 Watch the logs for `RRC_CONNECTED` and a successful PDU session establishment. On success, a `oaitun_ue1`-style interface appears:
@@ -208,7 +208,9 @@ ip a | grep oaitun     # should show 10.0.2.17
 ### 6. Start UE2 — URLLC (UE2's PC)
 
 ```bash
-sudo ./nr-uesoftmodem -O ue_urllc.conf --sa -r 106 --numerology 1 -E --continuous-tx
+ sudo "./nr-uesoftmodem" "-r" "106" "--numerology" "1" "--band" "78" "-C" "3619200000" "--ssb" "516" "-E" "-O" "/<Path-of-the-ue_urllc.conf>/ue_urllc.conf"
+
+
 ```
 
 Same check:
