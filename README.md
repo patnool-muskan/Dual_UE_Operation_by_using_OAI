@@ -137,7 +137,7 @@ uicc0 = {
     {
       pdu_session_id = 1;
       pdu_type       = "IPV4";
-      dnn            = "oai";
+       dnn            = "oai";
       nssai_sst      = 1;
       nssai_sd       = 0xFFFFFF;
     }
@@ -158,7 +158,7 @@ uicc0 = {
     {
       pdu_session_id = 1;
       pdu_type       = "IPV4";
-      dnn            = "lowlat";
+       dnn            = "lowlat";
       nssai_sst      = 2;
       nssai_sd       = 0x010203;
     }
@@ -254,7 +254,7 @@ sudo "./nr-uesoftmodem" "-r" "106" "--numerology" "1" "--band" "78" "-C" "361920
 ip a | grep oaitun     # should show 10.0.0.11
 ```
 ```bash
-ping 192.168.70.129 # IN UE1 and UE2 as well
+ping 192.168.70.129    # IN UE1 and UE2 as well
 ```
 
 > **Tip:** Bring up one UE at a time on the first run. If UE1 attaches but UE2 doesn't, the cause is almost always `ue_urllc.conf`'s NSSAI/DNN values not matching what was provisioned in the core DB — re-check step 2.
