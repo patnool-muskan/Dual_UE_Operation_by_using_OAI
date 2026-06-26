@@ -239,7 +239,7 @@ iperf3 servers run inside `oai-ext-dn` on PC1. Each UE PC runs its own iperf3 cl
 **PC1 — start one server per slice/port:**
 ```bash
 # Always kill stale iperf3 processes first
-$ docker exec oai-ext-dn pkill -9 iperf3 2>/dev/null
+docker exec oai-ext-dn pkill -9 iperf3 2>/dev/null
 sleep 1
 docker exec -d oai-ext-dn iperf3 -s -p 5201
 docker exec -d oai-ext-dn iperf3 -s -p 5202
@@ -247,12 +247,12 @@ docker exec -d oai-ext-dn iperf3 -s -p 5202
 
 **PC2 — UE1 (eMBB) client:**
 ```bash
-$ iperf3 -c 192.168.70.135 -B 10.0.2.17 -u -b 2M -R -t 30 -p 5202
+iperf3 -c 192.168.70.135 -B 10.0.2.17 -u -b 2M -R -t 30 -p 5202
 ```
 
 **PC3 — UE2 (URLLC) client:**
 ```bash
-$ iperf3 -c 192.168.70.135 -B 10.0.0.11 -u -b 2M -R -t 30 -p 5201
+iperf3 -c 192.168.70.135 -B 10.0.0.11 -u -b 2M -R -t 30 -p 5201
 ```
 
 > **Important:** The `-B` flag binds the socket to a local IP address on the machine running the command. Always run each UE's iperf3 client **on its own PC** — the PC that actually owns that tunnel IP.
@@ -288,7 +288,7 @@ A stale iperf3 server process from a previous run was still bound to port 5201 o
 **Fix:**
 ```bash
 # Kill all stale iperf3 processes inside the container first
-$ docker exec oai-ext-dn pkill -9 iperf3 2>/dev/null
+docker exec oai-ext-dn pkill -9 iperf3 2>/dev/null
 sleep 1
 docker exec -d oai-ext-dn iperf3 -s -p 5201
 docker exec -d oai-ext-dn iperf3 -s -p 5202
@@ -302,7 +302,7 @@ Always run the `pkill` step before starting iperf3 servers — especially after 
 
 **Exact error:**
 ```
-$ docker exec oai-ext-dn pkill -9 iperf3 2>dev/null
+docker exec oai-ext-dn pkill -9 iperf3 2>dev/null
 bash: dev/null: No such file or directory
 ```
 
@@ -312,7 +312,7 @@ A missing leading `/` in the stderr redirect. `2>dev/null` tells the shell to re
 **Fix:**
 ```bash
 # Correct — redirects stderr to the null device (discards it)
-$ docker exec oai-ext-dn pkill -9 iperf3 2>/dev/null
+docker exec oai-ext-dn pkill -9 iperf3 2>/dev/null
 ```
 
 ---
@@ -353,7 +353,8 @@ For the bracketed-paste issue: type commands manually or paste into a plain text
 
 **Exact error on PC1:**
 ```
-$ ping 10.0.0.8
+ping 10.0.0.8
+# Result:
 PING 10.0.0.8 (10.0.0.8) 56(84) bytes of data.
 From 192.168.70.129 icmp_seq=1 Destination Host Unreachable
 From 192.168.70.129 icmp_seq=2 Destination Host Unreachable
@@ -365,7 +366,8 @@ From 192.168.70.129 icmp_seq=2 Destination Host Unreachable
 PC2's default route was pointing to `192.168.70.134` — the UPF container's IP — via the `oai-cn5g` Docker bridge interface. This was the wrong gateway. The routing table at the time of failure:
 
 ```
-$ ip route show
+ip route show
+# Result:
 default via 192.168.70.134 dev oai-cn5g    ← wrong: UPF IP is not a host gateway
 default via 172.16.128.1 dev wlp2s0 ...
 192.168.70.128/26 dev oai-cn5g proto kernel scope link src 192.168.70.129
@@ -384,7 +386,8 @@ sudo ip route add default via 192.168.70.129 dev oai-cn5g
 
 **Resulting correct routing table on PC1(core+gnb):**
 ```
-$ ip route show
+ip route show
+# Results:
 default via 192.168.70.129 dev oai-cn5g          ← correct gateway
 default via 172.16.128.1 dev wlp2s0 proto dhcp src 172.16.139.175 metric 600
 172.16.128.0/20 dev wlp2s0 proto kernel scope link src 172.16.139.175 metric 600
@@ -393,15 +396,16 @@ default via 172.16.128.1 dev wlp2s0 proto dhcp src 172.16.139.175 metric 600
 ```
 IN PC3 (UE2):
 ```
-$ sudo ip route add default via 10.0.0.0 dev oaitun_ue1
+sudo ip route add default via 10.0.0.0 dev oaitun_ue1
 ```
 IN PC2 (UE1):
 ```
-$ sudo ip route add default via 10.0.2.0 dev oaitun_ue1
+sudo ip route add default via 10.0.2.0 dev oaitun_ue1
 ```
 IN PC2(UE1) and PC3(UE2) both:
 ```
-$ ip route show
+ip route show
+# Results:
 default via 10.0.0.0 dev oaitun_ue1   #IN PC PC3
 default via 10.0.2.0 dev oaitun_ue1   #IN PC PC2
 ```
