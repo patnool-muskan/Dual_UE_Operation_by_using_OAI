@@ -405,9 +405,9 @@ For the bracketed-paste issue: type commands manually or paste into a plain text
 
 ---
 
-### Issue 5 — Ping: Destination Host Unreachable (Wrong Default Route on PC2)
+### Issue 5 — Ping: Destination Host Unreachable (Wrong Default Route on PC1)
 
-**Exact error on PC2:**
+**Exact error on PC1:**
 ```
 $ ping 10.0.0.8
 PING 10.0.0.8 (10.0.0.8) 56(84) bytes of data.
@@ -438,6 +438,7 @@ sudo ip route add default via 192.168.70.129 dev oai-cn5g
 ```
 
 **Resulting correct routing table on PC1(core+gnb):**
+ip route show
 ```
 default via 192.168.70.129 dev oai-cn5g          ← correct gateway
 default via 172.16.128.1 dev wlp2s0 proto dhcp src 172.16.139.175 metric 600
