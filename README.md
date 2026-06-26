@@ -246,11 +246,12 @@ sudo ./nr-uesoftmodem \
   -C 3619200000 --ssb 516 -E \
   -O /<path-to-ue_urllc.conf>/ue_urllc.conf
 ```
-```bash
-ping 192.168.70.129 # IN UE1 and UE2 as well
-```
+
 ```bash
 ip a | grep oaitun     # should show 10.0.0.11
+```
+```bash
+ping 192.168.70.129 # IN UE1 and UE2 as well
 ```
 
 > **Tip:** Bring up one UE at a time on the first run. If UE1 attaches but UE2 doesn't, the cause is almost always `ue_urllc.conf`'s NSSAI/DNN values not matching what was provisioned in the core DB — re-check step 2.
