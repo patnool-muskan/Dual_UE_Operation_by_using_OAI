@@ -35,16 +35,16 @@ git clone https://github.com/Niladri-Roy07/Dual_UE_Operation_by_using_OAI.git
 cd Dual_UE_Operation_by_using_OAI
 docker compose up -d
 docker compose ps                       # all NFs + mysql + ims + ext-dn should be "healthy"
+docker compose down                     # stop the core network
 
 # 2. On the Core PC — start the gNB
 sudo ./nr-softmodem -O <path-to-gnb-conf> --sa -E --continuous-tx
 
 # 3. On UE1's PC (eMBB) — start the UE with the eMBB slice config
-sudo ./nr-uesoftmodem -O repo/configs/ue_embb.conf --sa -r 106 --numerology 1 -E --continuous-tx --uicc0.imsi 001010000000001
+sudo "./nr-uesoftmodem" "-r" "106" "--numerology" "1" "--band" "78" "-C" "3619200000" "--ssb" "516" "-E" "-O" "/<path-to-ue_embb.conf>/ue_embb.conf"
 
 # 4. On UE2's PC (URLLC) — start the UE with the URLLC slice config
-sudo ./nr-uesoftmodem -O repo/configs/ue_urllc.conf --sa -r 106 --numerology 1 -E --continuous-tx --uicc0.imsi 001010000000002
-
+sudo "./nr-uesoftmodem" "-r" "106" "--numerology" "1" "--band" "78" "-C" "3619200000" "--ssb" "516" "-E" "-O" "/<path-to-ue_urllc.conf>/ue_urllc.conf"
 # 5. Confirm both UEs attached and got a tunnel IP
 ip a | grep oaitun     # run on each UE PC — should show 10.0.2.17 (UE1) / 10.0.0.11 (UE2)
 
