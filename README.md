@@ -248,7 +248,7 @@ sudo ./nr-uesoftmodem \
 ```
 ```bash
 ping 192.168.70.129 # IN UE1 and UE2 as well
-
+```
 ```bash
 ip a | grep oaitun     # should show 10.0.0.11
 ```
