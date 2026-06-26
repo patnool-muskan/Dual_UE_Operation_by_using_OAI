@@ -354,32 +354,8 @@ docker exec oai-ext-dn pkill -9 iperf3 2>/dev/null
 
 ---
 
-### Issue 3 — docker exec: unknown shorthand flag
 
-**Exact error:**
-```
-$ docker exec-d oai-ext-dn iperf3 -s -p 5201
-unknown shorthand flag: 's' in -s
-
-Usage:  docker [OPTIONS] COMMAND [ARG...]
-Run 'docker --help' for more information
-```
-
-**What happened:**
-A missing space between `exec` and `-d`. Docker parsed `exec-d` as an unknown subcommand, fell back to top-level Docker flag parsing, and tried to interpret the `-s` from `iperf3 -s` as a Docker shorthand flag — which does not exist.
-
-**Fix:**
-```bash
-# Wrong — exec-d is not a valid docker subcommand
-docker exec-d oai-ext-dn iperf3 -s -p 5201
-
-# Correct — exec followed by the detach flag with a space
-docker exec -d oai-ext-dn iperf3 -s -p 5201
-```
-
----
-
-### Issue 4 — iperf3 Client: Cannot Assign Requested Address
+### Issue 3 — iperf3 Client: Cannot Assign Requested Address
 
 **Exact error:**
 ```
@@ -410,7 +386,7 @@ For the bracketed-paste issue: type commands manually or paste into a plain text
 
 ---
 
-### Issue 5 — Ping: Destination Host Unreachable (Wrong Default Route on PC1)
+### Issue 4 — Ping: Destination Host Unreachable (Wrong Default Route on PC1)
 
 **Exact error on PC1:**
 ```
