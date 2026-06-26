@@ -33,9 +33,9 @@ A 3-PC, 3-USRP OpenAirInterface (OAI) 5G testbed running a single Core + gNB ins
 # 1. On the Core PC — bring up the 5G core
 git clone https://github.com/Niladri-Roy07/Dual_UE_Operation_by_using_OAI.git
 cd Dual_UE_Operation_by_using_OAI
+docker compose down                     # stop the core network
 docker compose up -d
 docker compose ps                       # all NFs + mysql + ims + ext-dn should be "healthy"
-docker compose down                     # stop the core network
 
 # 2. On the Core PC — start the gNB
 sudo ./nr-softmodem -O <path-to-gnb-conf> --sa -E --continuous-tx
@@ -197,9 +197,10 @@ The two IMSIs in the [Network Slice Configuration](#network-slice-configuration)
 ### 3. Bring up the core (PC1)
 
 ```bash
+docker compose down    # stop the core network
 docker compose up -d
 docker compose ps      # confirm all NFs + mysql + ims + ext-dn are healthy
-docker compose down    # stop the core network
+
 ```
 
 > ⚠️ Wait until every container shows `healthy` — not just `running`. `oai-amf` and `oai-smf` depend on `oai-nrf` and `mysql` being fully ready first.
@@ -210,9 +211,7 @@ docker compose down    # stop the core network
 
 ```bash
 cd ~/openairinterface5g/cmake_targets/ran_build/build
-sudo ./nr-softmodem \
-  -O ../../../targets/PROJECTS/GENERIC-NR-5GC/CONF/gnb.sa.band78.fr1.106PRB.usrpb210.conf \
-  --gNBs.[0].min_rxtxtime 8 -E
+sudo ./nr-softmodem -O <path-to-gnb-conf> --sa -E --continuous-tx
 ```
 
 Confirm `N2 setup` success in the gNB logs before starting either UE.
@@ -223,10 +222,7 @@ Confirm `N2 setup` success in the gNB logs before starting either UE.
 
 ```bash
 cd ~/openairinterface5g/cmake_targets/ran_build/build
-sudo ./nr-uesoftmodem \
-  -r 106 --numerology 1 --band 78 \
-  -C 3619200000 --ssb 516 -E \
-  -O /<path-to-ue_embb.conf>/ue_embb.conf
+sudo "./nr-uesoftmodem" "-r" "106" "--numerology" "1" "--band" "78" "-C" "3619200000" "--ssb" "516" "-E" "-O" "/<path-to-ue_embb.conf>/ue_embb.conf"
 ```
 
 Watch the logs for `RRC_CONNECTED` and a successful PDU session. On success the tunnel interface appears:
@@ -241,10 +237,7 @@ ip a | grep oaitun     # should show 10.0.2.17
 
 ```bash
 cd ~/openairinterface5g/cmake_targets/ran_build/build
-sudo ./nr-uesoftmodem \
-  -r 106 --numerology 1 --band 78 \
-  -C 3619200000 --ssb 516 -E \
-  -O /<path-to-ue_urllc.conf>/ue_urllc.conf
+sudo "./nr-uesoftmodem" "-r" "106" "--numerology" "1" "--band" "78" "-C" "3619200000" "--ssb" "516" "-E" "-O" "/<path-to-ue_urllc.conf>/ue_urllc.conf"
 ```
 
 ```bash
