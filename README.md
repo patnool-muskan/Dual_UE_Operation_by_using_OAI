@@ -176,7 +176,7 @@ docker compose up -d
 docker compose ps      # confirm all NFs + mysql + ims + ext-dn are healthy
 
 ```
-![Core containers healthy](output_images/01_core_docker_compose_up.png)
+![Core containers healthy](repo/output_images/01_core_docker_compose_up.png)
 
 > ⚠️ Wait until every container shows `healthy` — not just `running`. `oai-amf` and `oai-smf` depend on `oai-nrf` and `mysql` being fully ready first.
 
