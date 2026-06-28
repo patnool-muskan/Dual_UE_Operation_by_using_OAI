@@ -174,7 +174,7 @@ The two IMSIs in the [Network Slice Configuration](#network-slice-configuration)
 docker compose down    # stop the core network
 docker compose up -d
 docker compose ps      # confirm all NFs + mysql + ims + ext-dn are healthy
-
+![image_alt](https://github.com/Niladri-Roy07/Dual_UE_Operation_by_using_OAI/blob/fa8cd853379dfa1348081d137db1b822a7976abd/repo/configs/output_images/01_core_docker_compose_up.png)
 
 ```
 
